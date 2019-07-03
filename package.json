@@ -1,0 +1,15 @@
+{
+  "name": "assessment-nodejs",
+  "version": "1.0.0",
+  "description": "Node.js code assessment",
+  "main": "server.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Luis Uranga Ruiz",
+  "license": "ISC"
+}
