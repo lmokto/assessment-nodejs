@@ -1,5 +1,8 @@
+var bunyan = require('bunyan');
+
 var request = require('../utils/request');
 var cfg = require('../config');
+var log = bunyan.createLogger({name: "users"});
 
 /*
   Refactorizacion

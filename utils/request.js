@@ -1,7 +1,7 @@
 const http = require('http');
 const https = require('https');
 
-options = (host, resource) => {
+var options = (host, resource) => {
   return {
     host: host,
     path: resource,
@@ -13,7 +13,7 @@ options = (host, resource) => {
 }
 
 
-req = (options, callback) => {
+var req = (options, callback) => {
 
   const port = options.port == 443 ? https : http;
   let output = '';

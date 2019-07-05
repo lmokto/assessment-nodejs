@@ -3,8 +3,10 @@ var config = require('../config');
 var User = require('../models/user');
 var bcrypt = require('bcryptjs');
 
+var bunyan = require('bunyan');
+var log = bunyan.createLogger({name: "authentication"});
 
-function verifyToken(req, res, next) {
+var verifyToken = function(req, res, next) {
   var token = req.headers['x-access-token'];
   if (!token) 
     return res.send({ auth: false, message: 'No token provided.' });
@@ -14,7 +16,6 @@ function verifyToken(req, res, next) {
     req.userRole = decoded.role;
     next();
   });
-
 }
 
 var userAuth = function(req, res, next) {
@@ -29,7 +30,6 @@ var userAuth = function(req, res, next) {
     res.send({ auth: true, token: token });
   });
 }
-
 
 module.exports.verifyToken = verifyToken;
 module.exports.userAuth = userAuth

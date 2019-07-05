@@ -21,7 +21,6 @@ var resources = {
 	clients: '/v2/5808862710000087232b75ac'
 }
 
-
 module.exports.server = server
 module.exports.resources = resources
 module.exports.jwt = jwt
