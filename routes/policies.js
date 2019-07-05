@@ -1,33 +1,47 @@
+var request = require('../utils/request');
+var cfg = require('../config');
+
 var getPoliciesByUser = function(req, res, next){
-    res.send(200, { 'policies': [{
-	      'id': "6f514ec4-1726-4628-974d-20afe4da130c",
-	      'amountInsured': 697.04,
-	      'email': 'inesblankenship@quotezart.com',
-	      'inceptionDate': '2014-09-12T12:10:23Z',
-	      'installmentPayment': false,
-	      'clientId': 'a0ece5db-cd14-4f21-812f-966633e7be86'
-	    },
-	    {
-	      'id': '7b624ed3-00d5-4c1b-9ab8-c265067ef58b',
-	      'amountInsured': 399.89,
-	      'email': 'inesblankenship@quotezart.com',
-	      'inceptionDate': '2015-07-06T06:55:49Z',
-	      'installmentPayment': true,
-	      'clientId': 'a0ece5db-cd14-4f21-812f-966633e7be86'
-	    }]
- 	});
-	next();
+  if (['admin'].indexOf(req.userRole) >= 0) return res.send({ message: 'Failed to authenticate token.' });
+  var opt_clients = request.options(cfg.resources.host, cfg.resources.clients)
+  var opt_policies = request.options(cfg.resources.host, cfg.resources.policies)
+  request.req(opt_clients, (status, result) => {
+	var name = req.params.name;
+	var client = result['clients'].find(c => c.name.toLowerCase() === name.toLowerCase());
+	if (client) {
+		request.req(opt_policies, (status, result) => {
+			var _id = client['id'];
+			var policies = [];
+			result['policies'].find(function(p) {
+				if(p.clientId === _id) policies.push(p);
+			});
+			res.send(200, policies || []);
+		});
+	} else {
+		res.send(200, []);
+	}
+  });
+  next();
 }
 
 var getUserByPolicyNumber = function(req, res, next){
-	res.send(200, {'user' : {
-    		'id': 'a0ece5db-cd14-4f21-812f-966633e7be86',
-      		'name': 'Britney',
-      		'email': 'britneyblankenship@quotezart.com',
-      		'role': 'admin'
-		}
-	});
-	next();
+  if (['admin'].indexOf(req.userRole) >= 0) return res.send({ message: 'Failed to authenticate token.' });
+  var opt_clients = request.options(cfg.resources.host, cfg.resources.clients)
+  var opt_policies = request.options(cfg.resources.host, cfg.resources.policies)
+  request.req(opt_policies, (status, result) => {
+	var number = req.params.number;
+	var policy = result['policies'].find(p => p.id === number);
+	if (policy) {
+		request.req(opt_clients, (status, result) => {
+			var _id = policy['clientId'];
+			client = result['clients'].find(o => o.id === _id);
+			res.send(200, client || {});
+		});
+	} else {
+		res.send(200, []);
+	}
+  });
+  next();
 }
 
 module.exports.getPoliciesByUser = getPoliciesByUser

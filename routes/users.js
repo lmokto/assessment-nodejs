@@ -1,23 +1,44 @@
+var request = require('../utils/request');
+var cfg = require('../config');
+
+/*
+  Refactorizacion
+
+  'GET     /user/:id', getUserById
+  'GET     /user/name/:name', getUserByName
+  
+  las dos funciones se pueden refactorizar y crear una sola funcion
+  Utilizamos una expresion regular en el endpoint /user/:%(id or name) para enviar como parametro id o name
+  si el id es numerico, entonces buscamos por id
+  si el name es string, entonces buscamos por name
+
+  Resultado
+
+  'GET     /user/:(id|name)', getUserByIdOrName
+
+*/
+
+
 var getUserById = function(req, res, next){
-	res.send(200, {'user' : {
-    		'id': 'a0ece5db-cd14-4f21-812f-966633e7be86',
-      		'name': 'Britney',
-      		'email': 'britneyblankenship@quotezart.com',
-      		'role': 'admin'
-		}
-	});
+  if (['admin', 'user'].indexOf(req.userRole) >= 0) return res.send({ message: 'Failed to authenticate token.' });
+  var resource = request.options(cfg.resources.host, cfg.resources.clients)
+  request.req(resource, (status, result) => {
+      var _id = req.params.id;
+      var client = result['clients'].find(c => c.id === _id);
+      res.send(200, client || {});
+  });
 	next();
 }
 
 var getUserByName = function(req, res, next){
-	res.send(200, {'user' : {
-    		'id': 'a0ece5db-cd14-4f21-812f-966633e7be86',
-      		'name': 'Britney',
-      		'email': 'britneyblankenship@quotezart.com',
-      		'role': 'admin'
-		}
-	});
-	next();	
+  if (['admin', 'user'].indexOf(req.userRole) >= 0) return res.send({ message: 'Failed to authenticate token.' });
+  var resource = request.options(cfg.resources.host, cfg.resources.clients)
+  request.req(resource, (status, result) => {
+      var name = req.params.name;
+      var client = result['clients'].find(c => c.name.toLowerCase() === name.toLowerCase());
+      res.send(200, client || {});
+  });
+  next(); 
 }
 
 module.exports.getUserById = getUserById
