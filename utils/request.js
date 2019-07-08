@@ -17,7 +17,7 @@ var req = (options, callback) => {
   let output = "";
 
   const req = port.request(options, res => {
-    console.log(`${options.host} : ${res.statusCode}`);
+
     res.setEncoding("utf8");
 
     res.on("data", chunk => {

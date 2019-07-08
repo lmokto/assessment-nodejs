@@ -5,7 +5,7 @@ var cfg = require("../config");
 var log = bunyan.createLogger({ name: "policies" });
 
 var getPoliciesByUser = function(req, res, next) {
-  if (["admin"].indexOf(req.userRole) >= 0)
+  if (["admin"].indexOf(req.userRole) < 0)
     return res.send({ message: "Failed to authenticate token." });
   var opt_clients = request.options(cfg.resources.host, cfg.resources.clients);
   var opt_policies = request.options(
@@ -34,7 +34,7 @@ var getPoliciesByUser = function(req, res, next) {
 };
 
 var getUserByPolicyNumber = function(req, res, next) {
-  if (["admin"].indexOf(req.userRole) >= 0)
+  if (["admin"].indexOf(req.userRole) < 0)
     return res.send({ message: "Failed to authenticate token." });
   var opt_clients = request.options(cfg.resources.host, cfg.resources.clients);
   var opt_policies = request.options(

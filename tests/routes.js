@@ -46,10 +46,10 @@ describe("Connection Model", function() {
       done();
     });
 
-    it("User Test1 can access services according to their permission", function(done) {
+    it("User Test2 can access services according to their permission", function(done) {
       client.post(
         "/login",
-        { email: "test1@gmail.com", password: "test123" },
+        { email: "test2@gmail.com", password: "test123" },
         function(err, req, res, obj) {
           assert.ifError(err);
           var token = obj["token"];
@@ -76,10 +76,10 @@ describe("Connection Model", function() {
       done();
     });
 
-    it("User Test2 can access services according to their permission", function(done) {
+    it("User Test1 can access services according to their permission", function(done) {
       client.post(
         "/login",
-        { email: "test2@gmail.com", password: "test123" },
+        { email: "test1@gmail.com", password: "test123" },
         function(err, req, res, obj) {
           assert.ifError(err);
           var token = obj["token"];

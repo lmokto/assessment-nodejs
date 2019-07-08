@@ -52,11 +52,6 @@ server.get(
 );
 
 server.listen(config.server.port, function() {
-  const url =
-    config.server.protocol +
-    config.server.hostname +
-    ":" +
-    config.server.port +
-    "/";
+  const url = config.server.protocol + config.server.hostname + ":" + config.server.port + "/";
   log.info("Server ready on %s", url);
 });

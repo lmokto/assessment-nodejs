@@ -10,8 +10,6 @@ var verifyToken = function(req, res, next) {
   var token = req.headers["x-access-token"];
   if (!token) return res.send({ auth: false, message: "No token provided." });
   jwt.verify(token, config.jwt.secret, function(err, decoded) {
-    console.log(decoded);
-    console.log(err);
     if (err) {
       return res.send({
         auth: false,
