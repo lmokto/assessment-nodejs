@@ -23,7 +23,7 @@ var log = bunyan.createLogger({name: "users"});
 
 
 var getUserById = function(req, res, next){
-  if (['admin', 'user'].indexOf(req.userRole) >= 0) return res.send({ message: 'Failed to authenticate token.' });
+  if (['admin', 'user'].indexOf(req.userRole) < 0) return res.send({ message: 'You do not have permission' });
   var resource = request.options(cfg.resources.host, cfg.resources.clients)
   request.req(resource, (status, result) => {
       var _id = req.params.id;
@@ -34,7 +34,8 @@ var getUserById = function(req, res, next){
 }
 
 var getUserByName = function(req, res, next){
-  if (['admin', 'user'].indexOf(req.userRole) >= 0) return res.send({ message: 'Failed to authenticate token.' });
+  console.log(req.userRole);
+  if (['admin', 'user'].indexOf(req.userRole) < 0) return res.send({ message: 'You do not have permission' });
   var resource = request.options(cfg.resources.host, cfg.resources.clients)
   request.req(resource, (status, result) => {
       var name = req.params.name;

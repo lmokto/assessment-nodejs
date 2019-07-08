@@ -10,11 +10,13 @@
     "assert-plus": "0.2.0",
     "bcryptjs": "^2.4.3",
     "bunyan": "^1.5.1",
+    "chai-http": "^4.3.0",
     "jsonwebtoken": "^7.4.1",
     "mongoose": "^5.6.3",
     "mongoose-string-query": "^0.2.7",
     "posix-getopt": "1.2.0",
     "restify": "^4.3.4",
+    "restify-clients": "^2.6.6",
     "restify-errors": "^3.1.0",
     "restify-plugins": "^1.6.0"
   },
@@ -24,7 +26,7 @@
     "nodeunit": "0.9.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha tests/**.js",
     "start": "node server.js"
   },
   "author": "Luis Uranga Ruiz",

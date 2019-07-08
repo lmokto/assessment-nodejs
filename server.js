@@ -9,8 +9,12 @@ var users = require('./routes/users');
 
 var log = bunyan.createLogger({name: "server"});
 var server = restify.createServer();
+process.env.NODE_ENV  = 'test'
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'test') {
+    mongoose.connect(config.database.test.uri, { useNewUrlParser: true });
+}
 
-mongoose.connect(config.database.uri, { useNewUrlParser: true });
 log.info('Connect MongoDB ready on %s', config.database.uri);
 
 server.use(restify.plugins.dateParser());
@@ -39,6 +43,6 @@ server.get('/policies/:name', authentication.verifyToken, policies.getPoliciesBy
 server.get('/policies/:number/user', authentication.verifyToken, policies.getUserByPolicyNumber);
 
 server.listen(config.server.port, function () {
-	const url = config.server.protocol + config.server.hostname + ":" +config.server.port + "/";
+    const url = config.server.protocol + config.server.hostname + ":" + config.server.port + "/";
     log.info('Server ready on %s', url);
 });
